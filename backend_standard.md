@@ -11,6 +11,7 @@ you can compile your code directly with babel in your `package.json` something l
 "scripts": {
   "dev": "nodemon --exec babel-node src/index.js",
   "build": "rm -rf dist && babel src --out-dir dist",
+  "lint": "eslint src"
 }
 
 ```
@@ -41,10 +42,14 @@ server/
       param_validators/
         some_controller.js
     config/
+      deployment/
       env/
         production.js
         development.js
         index.js
+    tests/
+      models/
+      routes/
     index.js
 ```
 
@@ -54,8 +59,12 @@ These libraries will help you to make good API:
 
 - Handle Promises with [Bluebird.js](http://bluebirdjs.com/docs/api-reference.html)
 
--  Tests with [Mocha](https://mochajs.org/) & [Chai](http://chaijs.com/)
+-  Tests with [Mocha](https://mochajs.org/), [Chai](http://chaijs.com/) and [Istanbul](https://www.npmjs.com/package/istanbul)
 
 - Check the Request's with [Params validations](https://www.npmjs.com/package/express-validation) & [Joi](https://github.com/hapijs/joi)
 
 - Parse, validate, manipulate, and display dates with  [momentjs](https://momentjs.com/)
+
+## Examples
+
+- [Example 1](https://github.com/Vinz93/node-redux/tree/master/server)
