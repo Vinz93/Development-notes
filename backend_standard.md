@@ -21,8 +21,8 @@ you can compile your code directly with babel in your `package.json` something l
 
 
 ## Project Structure
-
-The file and directory names are in `snake_case`
+This is an option to organize the structure of your API code,
+the files and directories names must be in `snake_case`
 ```
 server/
   README.md
