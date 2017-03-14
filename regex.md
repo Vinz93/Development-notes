@@ -57,3 +57,4 @@ posssible subjects:
 
 - Ahooy, `Okay`!.
 - `ok`, i will do it.
+- `sure` do it.
