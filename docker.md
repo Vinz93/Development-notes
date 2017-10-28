@@ -72,3 +72,15 @@ $ docker container stop 1fa4ab2cf395
 ```
 
 ## Share your image
+### Push your images to Docker hub
+```
+$ docker login
+$ docker tag imagename username/repository:tag
+$ docker push username/repository:tag
+```
+### Pull and run the image from the remote repository
+From now on, you can use docker run and run your app on any machine with this command:
+```
+$ docker run -p 4000:80 username/repository:tag
+```
+No matter where `docker run` executes, it pulls your image, along with all the dependencies of your app, and runs your code. It all travels together in a neat little package, and the host machine doesn’t have to install anything but Docker to run it.
