@@ -150,7 +150,7 @@ The file above tells Docker to do the following actions
 
 - Instruct web’s containers to share port 80 via a load-balanced network called webnet. (Internally, the containers themselves will publish to web’s port 80 at an ephemeral port.)
 
--Define the webnet network with the default settings (which is a load-balanced overlay network).
+- Define the webnet network with the default settings (which is a load-balanced overlay network).
 
 ### Run your new load-balanced app
 
@@ -161,12 +161,24 @@ $ docker swarm init --advertise-addr 127.0.0.1
 $ docker stack deploy -c docker-compose.yml getstartedlab
 ```
 
-
+You can check your service and each container
 ```
 $ docker service ls
 $ docker service ps <service>
+docker inspect --format='{{.Status.ContainerStatus.ContainerID}}' <task>
 ```
 
+### Take down the app and the swarm
+
+Take down the app
+```
+$ docker stack rm getstartedlab
+```
+
+Take down the swarm
+```
+$ docker swarm leave --force
+```
 
 
 ### Basic commands for services
