@@ -11,7 +11,7 @@ A container is a **runtime instance of an image**—what the image becomes in me
 Containers run apps natively on the host machine’s kernel. They have *better **performance** characteristics than virtual machines* that only get virtual access to host resources through a hypervisor. Containers can get native access, each one running in a discrete process, taking no more memory than any other executable.
 ## Dockerfile
 
-`Dockerfile` will define what goes on in the environment inside your container. **Access** to resources like **networking interfaces** and disk drives is virtualized inside this environment, which is isolated from the rest of your system, so you have to * **map ports** to the outside world*, and be specific about what files you want to “copy in” to that environment. However, after doing that, you can expect that the build of your app defined in this Dockerfile will behave exactly the same wherever it runs.
+`Dockerfile` will define what goes on in the environment inside your container. **Access** to resources like **networking interfaces** and disk drives is virtualized inside this environment, which is isolated from the rest of your system, so you have to **map ports to the outside world**, and be specific about what files you want to “copy in” to that environment. However, after doing that, you can expect that the build of your app defined in this Dockerfile will behave exactly the same wherever it runs.
 
 Eg. Dockerfile
 ```
@@ -192,3 +192,4 @@ docker container ls -q                                      # List container IDs
 docker stack rm <appname>                             # Tear down an application
 docker swarm leave --force      # Take down a single node swarm from the manager
 ```
+## Swarms
