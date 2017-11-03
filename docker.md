@@ -155,6 +155,8 @@ The file above tells Docker to do the following actions
 ### Run your new load-balanced app
 
 Run your app with the following commands and your `docker-compose.yml`.
+just in case of problems
+``--listen-addr $(docker-machine ip node1):2377`
 
 ```
 $ docker swarm init --advertise-addr 127.0.0.1
@@ -191,4 +193,25 @@ docker inspect <task or container>                   # Inspect task or container
 docker container ls -q                                      # List container IDs
 docker stack rm <appname>                             # Tear down an application
 docker swarm leave --force      # Take down a single node swarm from the manager
+```
+
+## Understanding Swarm clusters
+
+A swarm is a group of machines that are running Docker and joined into a cluster. After that has happened, you continue to run the Docker commands you’re used to, but now they are executed on a cluster by a **swarm manager**. The machines in a swarm can be physical or virtual. After joining a swarm, they are referred to as nodes.
+
+Swarm managers can use several strategies to run containers, such as “emptiest node” – which fills the least utilized machines with containers. Or “global”, which ensures that each machine gets exactly one instance of the specified container. You instruct the swarm manager to use these strategies in the Compose file, just like the one you have already been using.
+
+**Swarm managers are the only machines in a swarm that can execute your commands**, or authorize other machines to join the swarm as workers. **Workers are just there to provide capacity** and do not have the authority to tell any other machine what it can and cannot do.
+
+Docker can be switched into **swarm mode**, and that’s what enables the use of swarms. Enabling swarm mode instantly makes the current machine a swarm manager. From then on, Docker will run the commands you execute on the swarm you’re managing, rather than just on the current machine.
+
+### Set up your swarm
+
+A swarm is made up of multiple nodes, which can be either physical or virtual machines. The basic concept is simple enough: `run docker swarm init` to enable swarm mode and make your current machine a **swarm manager**, then run `docker swarm join` on other machines to have them join the swarm as workers.
+
+### Create a cluster
+
+```
+$ docker-machine create --driver virtualbox myvm1
+$ docker-machine create --driver virtualbox myvm2
 ```
