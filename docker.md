@@ -215,3 +215,82 @@ A swarm is made up of multiple nodes, which can be either physical or virtual ma
 $ docker-machine create --driver virtualbox myvm1
 $ docker-machine create --driver virtualbox myvm2
 ```
+**LIST THE VMS AND GET THEIR IP ADDRESSES**
+
+```
+$ docker-machine ls
+
+# output
+NAME    ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS
+myvm1   -        virtualbox   Running   tcp://192.168.99.100:2376           v17.06.2-ce   
+myvm2   -        virtualbox   Running   tcp://192.168.99.101:2376           v17.06.2-ce   
+```
+
+**INITIALIZE THE SWARM AND ADD NODES**
+
+send commands to your VMs using `docker-machine ssh`. Instruct myvm1 to **become a swarm manager** with `docker swarm init`
+
+```
+$ docker-machine ssh myvm1 "docker swarm init --advertise-addr <myvm1 ip>"
+Swarm initialized: current node <node ID> is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+  docker swarm join \
+  --token <token> \
+  <myvm ip>:<port>
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+```
+
+**PORTS**
+
+Always run `docker swarm init` and `docker swarm` join with port 2377 (the swarm management port), or no port at all and let it take the default.
+
+The machine IP addresses returned by docker-machine ls include port 2376, which is the Docker daemon port. Do not use this port or you may experience errors.
+
+Join the second VM to the swarm with:
+
+```
+$ docker-machine ssh myvm2 "docker swarm join \
+--token <token> \
+<ip>:2377"
+
+This node joined a swarm as a worker.
+```
+
+Run docker node ls on the manager to view the nodes in this swarm:
+
+```
+$ docker-machine ssh myvm1 "docker node ls"
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS
+brtu9urxwfd5j0zrmkubhpkbd     myvm2               Ready               Active
+rihwohkh3ph38fhillhhb84sk *   myvm1               Ready               Active              Leader
+```
+
+## Deploy your app on the swarm cluster
+
+Use the swarm manager to deploy your app by using the same `docker stack deploy` comman, and your **docker-compose.yml**.
+
+you’ll see that the services (and associated containers) have been distributed between both myvm1 and myvm2.
+
+```
+$ docker stack ps getstartedlab
+
+ID            NAME                  IMAGE                   NODE   DESIRED STATE
+jq2g3qp8nzwx  getstartedlab_web.1   john/get-started:part2  myvm1  Running
+88wgshobzoxl  getstartedlab_web.2   john/get-started:part2  myvm2  Running
+vbb1qbkb0o2z  getstartedlab_web.3   john/get-started:part2  myvm2  Running
+ghii74p9budx  getstartedlab_web.4   john/get-started:part2  myvm1  Running
+0prmarhavs87  getstartedlab_web.5   john/get-started:part2  myvm2  Running
+```
+
+### Accessing your cluster
+
+You can access your app from the IP address of either `myvm1` or `myvm2`.
+
+The network you created is shared between them and load-balancing. Run `docker-machine ls` to get your VMs’ IP addresses and visit either of them on a browser, hitting refresh (or just curl them).
+
+You’ll see five possible container IDs all cycling by randomly, demonstrating the **load-balancing**.
+
+The reason both IP addresses work is that nodes in a swarm participate in an ingress **routing mesh**. This ensures that a service deployed at a certain port within your swarm always has that port reserved to itself, no matter what node is actually running the container. Here’s a diagram of how a routing mesh for a service called my-web published at port 8080 on a three-node swarm would look:
