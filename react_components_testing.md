@@ -63,7 +63,31 @@ it('when submitted, clears the input', () => {
 });
 ```
 ---
+### Expectation on Content
+There are many different ways to make assertion in the component, it depends in your imagination, you can
+always check for the `chai` documentation and look for an assertion that fits in what you want to test.
 
+The example below shows two test for a **commentList**, first it adds the comments and then checks if the quantity of `<li>` is the same as the comments that were pass to the comment via props, the second test a verifies if the comments are the same.
+
+```js
+describe('CommentList', () => {
+  let component;
+  beforeEach(() => {
+    const props = { comments: ['so cool', 'get in', 'get out'] };
+    component = renderComponent(CommentList, null, props);
+  })
+  it('shows an LI for each comment', () => {
+    expect(component.find('li').length).to.equal(3);
+  });
+
+  it('shows each comment that is provided', () => {
+      expect(component).to.contain('so cool');
+      expect(component).to.contain('get in');
+      expect(component).to.contain('get out');
+  });
+})
+```
+---
 ## Redux side Testing
 ### Testing Action Creators
 
