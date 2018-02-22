@@ -6,3 +6,4 @@
  - [Send mandrill templates]( https://github.com/Vinz93/Development-notes/blob/master/send_mails_mandrill.md)
 
  - [Express API Guide Style]( https://github.com/Vinz93/Development-notes/blob/master/backend_standard.md)
+  - [Testing React Components]( https://github.com/Vinz93/Development-notes/blob/master/react_components_testing.md)
