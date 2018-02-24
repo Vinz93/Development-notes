@@ -40,7 +40,7 @@ it('shows a comment box', () => {
   expect(component.find('.comment-box')).to.exist;
 });
 ```
-In the example above, `component` has the whole app inside and uses the `chaiJquery` plugin, so you are able to find the components inside the app by his `ClassName` and check for the existence with **to.exist** assertion, this a good reason to always write a class for each component.
+In the example above, `component` has the whole app inside and uses the `chaiJquery` plugin, so you are abl to find the components inside the app by his `ClassName` and check for the existence with **to.exist** assertion, this a good reason to always write a class for each component.
 
 ---
 ### Simulating Events
@@ -90,6 +90,10 @@ describe('CommentList', () => {
 ---
 ## Redux side Testing
 ### Testing Action Creators
+ - check the correct type.
+ - check the payload of the action.
+### Testing Reducers
+- Test every action that the reducer handles.
 
 
 ---
